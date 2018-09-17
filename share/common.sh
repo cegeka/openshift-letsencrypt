@@ -4,8 +4,8 @@
 export LETSENCRYPT_SERVICE_NAME=${LETSENCRYPT_SERVICE_NAME-letsencrypt}
 export LETSENCRYPT_ACME_SECRET_NAME="${LETSENCRYPT_ACME_SECRET_NAME-letsencrypt-creds}"
 export LETSENCRYPT_DEFAULT_INSECURE_EDGE_TERMINATION_POLICY="${LETSENCRYPT_DEFAULT_INSECURE_EDGE_TERMINATION_POLICY-Redirect}"
-export LETSENCRYPT_ROUTE_SELECTOR="${LETSENCRYPT_ROUTE_SELECTOR-butter.sh/letsencrypt-managed=yes}"
-export LETSENCRYPT_DOMAIN_SELECTOR="${LETSENCRYPT_DOMAIN_SELECTOR-butter.sh/letsencrypt-domainname}"
+export LETSENCRYPT_ROUTE_SELECTOR="${LETSENCRYPT_ROUTE_SELECTOR-cegeka.io/letsencrypt-managed=yes}"
+export LETSENCRYPT_DOMAIN_SELECTOR="${LETSENCRYPT_DOMAIN_SELECTOR-cegeka.io/letsencrypt-domainname}"
 export LETSENCRYPT_KEYTYPE="${LETSENCRYPT_KEYTYPE-rsa}"
 export LETSENCRYPT_RENEW_BEFORE_DAYS=${LETSENCRYPT_RENEW_BEFORE_DAYS-30}
 export LETSENCRYPT_VERBOSE="${LETSENCRYPT_VERBOSE-yes}"
@@ -182,7 +182,7 @@ valid_secrets_selector() {
         min_valid_secs="$(min_valid_enddate_secs)"
     fi
 
-    echo "butter.sh/letsencrypt-crt-enddate-secs>$min_valid_secs,$(domain_selector "$DOMAINNAME")"
+    echo "cegeka.io/letsencrypt-crt-enddate-secs>$min_valid_secs,$(domain_selector "$DOMAINNAME")"
 }
 
 hpkp_sha256() {
@@ -238,8 +238,8 @@ add_certificate_to_route() {
     local data; data="$(cat <<EOF
         { "metadata": {
             "annotations": {
-              "butter.sh/letsencrypt-crt-enddate-secs": "$enddate_secs",
-              "butter.sh/letsencrypt-key-sha256": "$key_sha256"
+              "cegeka.io/letsencrypt-crt-enddate-secs": "$enddate_secs",
+              "cegeka.io/letsencrypt-key-sha256": "$key_sha256"
             },
             "labels": {
               "$LETSENCRYPT_DOMAIN_SELECTOR": "$DOMAINNAME"
@@ -283,11 +283,11 @@ new_cert_secret() {
   "metadata": {
     "name": "$secret_name",
     "labels": {
-      "butter.sh/letsencrypt-crt-enddate-secs": "$(crt_enddate_secs "$crtfile_")",
-      "butter.sh/letsencrypt-domainname": "$domainname"
+      "cegeka.io/letsencrypt-crt-enddate-secs": "$(crt_enddate_secs "$crtfile_")",
+      "cegeka.io/letsencrypt-domainname": "$domainname"
     },
     "annotations": {
-      "butter.sh/letsencrypt-key-sha256": "$(hpkp_sha256 "$keyfile_")"
+      "cegeka.io/letsencrypt-key-sha256": "$(hpkp_sha256 "$keyfile_")"
     }
   },
   "data": {
