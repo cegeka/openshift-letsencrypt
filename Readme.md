@@ -1,6 +1,6 @@
 # Automatic Certificates for Openshift Routes
 
-It will manage all `route`s with (by default) `butter.sh/letsencrypt-managed=yes` labels in the project/namespace, it's deployed in.
+It will manage all `route`s with (by default) `cegeka.io/letsencrypt-managed=yes` labels in the project/namespace, it's deployed in.
 
 
 ## Limitations
@@ -19,7 +19,7 @@ For now, there are the following limitations.
 
 The following env variables can be used.
 
- * `LETSENCRYPT_ROUTE_SELECTOR` (*optional*, defaults to `butter.sh/letsencrypt-managed=yes`), to filter the routes to use;
+ * `LETSENCRYPT_ROUTE_SELECTOR` (*optional*, defaults to `cegeka.io/letsencrypt-managed=yes`), to filter the routes to use;
  * `LETSENCRYPT_RENEW_BEFORE_DAYS` (*optional*, defaults to `30`), renew this number of days before the certificate is about to expire;
  * `LETSENCRYPT_CONTACT_EMAIL` (*required for account generation*), the email that will be used by the ACME CA;
  * `LETSENCRYPT_CA` (*optional*, defaults to `https://acme-v01.api.letsencrypt.org/directory`);
