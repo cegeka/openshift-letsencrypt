@@ -99,9 +99,33 @@ objects:
     sessionAffinity: None
     type: ClusterIP
 - apiVersion: v1
+  kind: Route
+  metadata:
+    annotations:
+      template.openshift.io/expose-uri: http://{.spec.host}{.spec.path}
+    name: letsencrypt
+  spec:
+    host: ${LETSENCRYPT_DOMAIN}
+    to:
+      kind: Service
+      name: letsencrypt
+- apiVersion: v1
   kind: ServiceAccount
   metadata:
     name: letsencrypt
+- apiVersion: v1
+  kind: RoleBinding
+  metadata:
+   name: letsencrypt
+  roleRef:
+   apiGroup: v1
+   kind: Role
+   name: edit
+  subjects:
+    - apiVersion: v1
+      fieldPath: metadata.namespace
+      kind: ServiceAccount
+      name: letsencrypt
 parameters:
 - description: The email to be register by the ACME registry.
   name: LETSENCRYPT_CONTACT_EMAIL
@@ -109,3 +133,7 @@ parameters:
 - description: Label selector for routes to be managed by LetsEncrypt
   name: LETSENCRYPT_ROUTE_SELECTOR
   required: true
+  value: cegeka.io/letsencrypt-managed=yes
+- description: The exposed hostname that will route to the letsencrypt service, if left
+    blank a value will be defaulted.
+  name: LETSENCRYPT_DOMAIN
